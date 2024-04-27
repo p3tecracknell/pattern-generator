@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Pattern Generator</title>
+    <style>
+        html,
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    </style>
+    <script type="module" src="../dist/index.js"></script>
+</head>
+
+<body>
+    <canvas id="demo"></canvas>
+    <script type="module">
+        import { generatePattern } from './index.ts'
+        function draw(bar) {
+            const canvas = document.getElementById("demo");
+            canvas.width = window.innerWidth
+            canvas.height = window.innerHeight
+
+            const ctx = canvas.getContext("2d");
+            const shadowCanvas = generatePattern(bar)
+
+            const pattern = ctx.createPattern(shadowCanvas, "repeat");
+            ctx.fillStyle = pattern;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        }
+
+        function run(event) {
+            let hash = window.location.hash.substring(1);
+            if (!hash) hash = "v-8-20-0-0-0-100-0-0-0-5"
+            draw(hash)
+        }
+
+        addEventListener("hashchange", run);
+
+        run()
+    </script>
+</body>
+
+</html>
