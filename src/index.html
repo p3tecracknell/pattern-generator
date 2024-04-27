@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+<!-- TODO: Get into GitHub pages -->
 
 <head>
     <meta charset="utf-8" />
@@ -17,24 +18,26 @@
 <body>
     <canvas id="demo"></canvas>
     <script type="module">
-        import { generatePattern } from './index.ts'
-        function draw(bar) {
+        import { generateCanvas } from './index.ts'
+        function draw(code) {
             const canvas = document.getElementById("demo");
             canvas.width = window.innerWidth
             canvas.height = window.innerHeight
 
             const ctx = canvas.getContext("2d");
-            const shadowCanvas = generatePattern(bar)
+            const shadowCanvas = generateCanvas(code)
 
             const pattern = ctx.createPattern(shadowCanvas, "repeat");
             ctx.fillStyle = pattern;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
         }
 
         function run(event) {
             let hash = window.location.hash.substring(1);
-            if (!hash) hash = "v-8-20-0-0-0-100-0-0-0-5"
+            if (!hash) {
+                hash = "d1-16-15-0-0-255-100-255-0-0-10"
+                window.location.hash = hash
+            }
             draw(hash)
         }
 
