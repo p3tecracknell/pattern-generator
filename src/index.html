@@ -10,6 +10,49 @@
         body {
             margin: 0 !important;
             padding: 0 !important;
+            font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #info {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 100%;
+            background-color: white;
+            display: table;
+            vertical-align: middle;
+        }
+
+        #info img {
+            border: 1px solid black;
+            left: 25px;
+            top: 25px;
+            display: table-cell;
+            margin: 10px
+        }
+
+        .i16 {
+            width: 16px;
+            height: 16px;
+        }
+
+        .i32 {
+            width: 32px;
+            height: 32px;
+        }
+
+        .i64 {
+            width: 64px;
+            height: 64px;
+        }
+
+        .i128 {
+            width: 128px;
+            height: 128px;
         }
     </style>
     <script type="module" src="../dist/index.js"></script>
@@ -17,8 +60,11 @@
 
 <body>
     <canvas id="demo"></canvas>
+    <div id="info">
+        <h1>Pattern</h1><img class="i16" /><img class="i32" /><img class="i64" /><img class="i128" />
+    </div>
     <script type="module">
-        import { generateCanvas } from './index.ts'
+        import { generateCanvas, generateImageData } from './index.ts'
         function draw(code) {
             const canvas = document.getElementById("demo");
             canvas.width = window.innerWidth
@@ -27,9 +73,25 @@
             const ctx = canvas.getContext("2d");
             const shadowCanvas = generateCanvas(code)
 
+            const imageData = generateImageData(code)
+            renderImageUsingImageData(imageData)
+
             const pattern = ctx.createPattern(shadowCanvas, "repeat");
             ctx.fillStyle = pattern;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function renderImageUsingImageData(imagedata) {
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+
+            canvas.width = imagedata.width;
+            canvas.height = imagedata.height;
+            ctx.putImageData(imagedata, 0, 0);
+
+            for (const img of document.getElementById("info").getElementsByTagName("img")) {
+                img.src = canvas.toDataURL("image/png");
+            }
         }
 
         function run(event) {
