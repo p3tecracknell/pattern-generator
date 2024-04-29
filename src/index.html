@@ -20,10 +20,16 @@
             position: absolute;
             top: 0px;
             left: 0px;
-            height: 100%;
+            margin: 20px;
+            padding-top: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            width: 200px;
             background-color: white;
             display: table;
             vertical-align: middle;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
         #info img {
@@ -31,27 +37,13 @@
             left: 25px;
             top: 25px;
             display: table-cell;
-            margin: 10px
+            margin: auto;
+            display: block;
         }
 
-        .i16 {
-            width: 16px;
-            height: 16px;
-        }
-
-        .i32 {
-            width: 32px;
-            height: 32px;
-        }
-
-        .i64 {
+        .preview {
             width: 64px;
             height: 64px;
-        }
-
-        .i128 {
-            width: 128px;
-            height: 128px;
         }
     </style>
     <script type="module" src="../dist/index.js"></script>
@@ -60,7 +52,36 @@
 <body>
     <canvas id="demo"></canvas>
     <div id="info">
-        <h1>Pattern</h1><img class="i16" /><img class="i32" /><img class="i64" /><img class="i128" />
+        <h1>Pattern</h1><img class="preview" />
+        <h3>Type</h3>
+        <table>
+            <tr>
+                <td><strong>v</strong></td>
+                <td>Vertical</td>
+            </tr>
+            <tr>
+                <td><strong>h</strong></td>
+                <td>Horizontal</td>
+            </tr>
+            <tr>
+                <td><strong>c</strong></td>
+                <td>Cross</td>
+            </tr>
+            <tr>
+                <td><strong>d1</strong></td>
+                <td>Diagonal top left</td>
+            </tr>
+            <tr>
+                <td><strong>d2</strong></td>
+                <td>Diagonal top right</td>
+            </tr>
+            <tr>
+                <td><strong>d3</strong></td>
+                <td>Diagonal both ways</td>
+            </tr>
+        </table>
+        <h3>Stroke size</h3>
+        <p>10% | 20% | 30% | 40% | 50% | 60% | 70% | 80% | 90%</p>
     </div>
     <script type="module">
         import { generateCanvas, generateImageData } from './index.ts'
