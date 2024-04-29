@@ -1,6 +1,6 @@
 {
   "name": "mapbox-pattern-generator",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Generate sprites suitable for Mapbox",
   "keywords": [
     "mapbox",
