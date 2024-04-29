@@ -132,9 +132,9 @@
 
         function setupPatternTypes() {
             const patternTypeRows = document.getElementById("pattern-type").getElementsByTagName("tr")
-            for (row of patternTypeRows) {
+            for (const row of patternTypeRows) {
                 const cells = row.getElementsByTagName("td")
-                for (cell of cells) {
+                for (const cell of cells) {
                     cell.addEventListener("click", () => {
                         setParam('patternType', cells[0].innerText)
                     })
