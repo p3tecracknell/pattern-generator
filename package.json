@@ -39,6 +39,10 @@
         "sourceMap": {
           "inline": true
         }
+      },
+      "types": {},
+      "static": {
+        "distDir": "_site"
       }
     }
 }
