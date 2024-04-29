@@ -23,8 +23,18 @@ export function parseInput(input: string): InputParams {
     };
 }
 
+export function generateInput(params: InputParams): string {
+    const strokeColour = colourInput(params.stroke)
+    const backgroundColour = colourInput(params.background)
+    return `${params.patternType}-${params.size}-${params.strokeWidthPercentage}-${strokeColour}-${backgroundColour}`
+}
+
 function colourString(colour: Colour): RGB {
     return `rgb(${colour.R} ${colour.G} ${colour.B} / ${colour.A}%)`;
+}
+
+function colourInput(colour: Colour): string {
+    return `${colour.R}-${colour.G}-${colour.B}-${colour.A}`
 }
 
 export function processCanvas(input: InputParams) {

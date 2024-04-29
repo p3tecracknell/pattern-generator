@@ -24,12 +24,14 @@
             padding-top: 10px;
             padding-left: 20px;
             padding-right: 20px;
+            padding-bottom: 20px;
             width: 200px;
             background-color: white;
             display: table;
             vertical-align: middle;
             border-radius: 20px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            overflow: scroll;
         }
 
         #info img {
@@ -54,7 +56,7 @@
     <div id="info">
         <h1>Pattern</h1><img class="preview" />
         <h3>Type</h3>
-        <table>
+        <table id="pattern-type">
             <tr>
                 <td><strong>v</strong></td>
                 <td>Vertical</td>
@@ -80,11 +82,18 @@
                 <td>Diagonal both ways</td>
             </tr>
         </table>
+        <h3>Cell size</h3>
+        <p id="cellSizes"></p>
+
         <h3>Stroke size</h3>
-        <p>10% | 20% | 30% | 40% | 50% | 60% | 70% | 80% | 90%</p>
+        <p id="strokeSizes"></p>
+
+        <h3>Colours</h3>
+        FG <input type="color" id="fg" /> BG <input type="color" id="bg" />
     </div>
     <script type="module">
         import { generateCanvas, generateImageData } from './index.ts'
+        import { generateInput, parseInput } from './process.ts'
         function draw(code) {
             const canvas = document.getElementById("demo");
             canvas.width = window.innerWidth
@@ -114,16 +123,99 @@
             }
         }
 
+        function setParam(field, value) {
+            const hash = window.location.hash.substring(1)
+            const params = parseInput(hash)
+            params[field] = value
+            window.location.hash = generateInput(params)
+        }
+
+        function setupPatternTypes() {
+            const patternTypeRows = document.getElementById("pattern-type").getElementsByTagName("tr")
+            for (row of patternTypeRows) {
+                const cells = row.getElementsByTagName("td")
+                for (cell of cells) {
+                    cell.addEventListener("click", () => {
+                        setParam('patternType', cells[0].innerText)
+                    })
+                }
+            }
+        }
+
+        function setupCellSizes() {
+            const parent = document.getElementById("cellSizes")
+            for (let i = 4; i <= 256; i *= 2) {
+                const element = document.createElement("span")
+                element.addEventListener("click", () => {
+                    setParam('size', element.dataset['id'])
+                })
+                element.innerText = `${i} `
+                element.dataset['id'] = i
+                parent.appendChild(element)
+            }
+        }
+
+        function setupStrokeSizes() {
+            const parent = document.getElementById("strokeSizes")
+            for (let i = 10; i <= 100; i += 10) {
+                const element = document.createElement("span")
+                element.addEventListener("click", () => {
+                    setParam('strokeWidthPercentage', element.dataset['id'])
+                })
+                element.innerText = `${i}% `
+                element.dataset['id'] = i
+                parent.appendChild(element)
+            }
+        }
+
+        function setColourInputToHash(id, field) {
+            const el = document.getElementById(id)
+            const hash = window.location.hash.substring(1)
+            const params = parseInput(hash)
+            const currentValue = params[field]
+            el.value = rgbToHex(currentValue)
+        }
+        function setupColour(id, field) {
+            const el = document.getElementById(id)
+
+            el.addEventListener("input", (event) => {
+                const value = event.target.value
+                setParam(field, {
+                    'R': parseInt(value.substr(1, 2), 16),
+                    'G': parseInt(value.substr(3, 2), 16),
+                    'B': parseInt(value.substr(5, 2), 16),
+                    'A': 100
+                })
+            })
+        }
+
+        function componentToHex(c) {
+            var hex = c.toString(16);
+            return hex.length == 1 ? "0" + hex : hex;
+        }
+
+        function rgbToHex(colour) {
+            return "#" + componentToHex(colour.R) + componentToHex(colour.G) + componentToHex(colour.B);
+        }
+
         function run(event) {
             let hash = window.location.hash.substring(1);
             if (!hash) {
-                hash = "d1-16-15-0-0-255-100-255-0-0-10"
+                hash = "d3-16-40-190-238-17-100-249-11-11-100"
                 window.location.hash = hash
             }
+            setColourInputToHash("fg", "stroke")
+            setColourInputToHash("bg", "background")
             draw(hash)
         }
 
         addEventListener("hashchange", run);
+
+        setupCellSizes()
+        setupPatternTypes()
+        setupStrokeSizes()
+        setupColour("fg", "stroke")
+        setupColour("bg", "background")
 
         run()
     </script>
