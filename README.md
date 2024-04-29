@@ -11,7 +11,7 @@ npm install pattern-generator
 npm start
 ```
 
-Browse to `http://localhost:3000` to see a previw of the pattern. Modify the hash value with the following parameters:
+Use `https://p3tecracknell.github.io/pattern-generator` to design your pattern. Modify the hash value with the following parameters:
 
 ```javascript
 [direction]-[size]-[lineWidth]-[strokeRed]-[strokeGreen]-[strokeBlue]-[strokeAlpha]-[backgroundRed]-[backgroundGreen]-[backgroundBlue]-[backgroundAlpha]
